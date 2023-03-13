@@ -52,7 +52,7 @@ public class UserService implements IUserService {
         String subject = "Activate your NShoes account";
         String msgBody = "Hi " + user.getUsername() + ",\n" +
                 "\n" +
-                "To activate your NShoes account, please click http://localhost:8080/api/v1/auth/verification?username=" + userDTO.getUsername() + "&id=" + userDTO.getUserId() + " to verify your email address and you’ll be prompted to login.\n" +
+                "To activate your NShoes account, please click https://nshoes-back.herokuapp.com/api/v1/auth/verification?username=" + userDTO.getUsername() + "&id=" + userDTO.getUserId() + " to verify your email address and you’ll be prompted to login.\n" +
                 "\n" +
 
                 "Sincerely,\n" +
