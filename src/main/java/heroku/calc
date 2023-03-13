@@ -1,0 +1,12 @@
+#!/bin/bash
+echo "Write 'First number' <SPACE> 'math operator' <SPACE> 'Second number'"
+read -r a operation b
+case $operation in
+  "+")result=$(($a+$b));;
+  "-")result=$(($a-$b));;
+  "/")result=$(($a/$b));;
+  "*")result=$(($a*$b));;
+  "%")result=$(($a%$b));;
+*) echo "NOT MATH OPERATION INPUT" ; break ;;
+esac
+echo "Result = $result "
