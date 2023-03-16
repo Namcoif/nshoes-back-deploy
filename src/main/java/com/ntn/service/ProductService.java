@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Service
@@ -17,6 +19,9 @@ public class ProductService implements IProductService {
 
     @Autowired
     private IProductRepository productRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public List<Product> getListProducts() {
@@ -56,6 +61,11 @@ public class ProductService implements IProductService {
 
 //        product.setProductId(product.getProductId());
         productRepository.save(product);
+    }
+
+    @Override
+    public List<Product> sellingProducts(int limit) {
+        return entityManager.createQuery("SELECT pr FROM Product pr ORDER BY pr.soldCount DESC",Product.class).setMaxResults(limit).getResultList();
     }
 
 

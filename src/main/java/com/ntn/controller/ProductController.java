@@ -102,4 +102,13 @@ public class ProductController {
         }
     }
 
+    @GetMapping(value = "/selling-products")
+    public List<ProductDTO> sellingProducts() {
+        List<Product> productList = productService.sellingProducts(10);
+        List<ProductDTO> productDTOList = modelMapper.map(productList, new TypeToken<List<ProductDTO>>() {
+        }.getType());
+
+        return productDTOList;
+    }
+
 }

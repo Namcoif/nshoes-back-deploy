@@ -21,4 +21,6 @@ public interface IProductService {
     void deleteProduct(Integer id);
 
     void updateProduct(Product product);
+
+    List<Product> sellingProducts(int limit);
 }
