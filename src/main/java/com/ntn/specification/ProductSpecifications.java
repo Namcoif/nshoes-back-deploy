@@ -8,9 +8,9 @@ import org.springframework.util.StringUtils;
 public class ProductSpecifications {
     public static Specification<Product> searchProducts(QueryProductDTO queryProductDTO) {
         Specification<Product> where = null;
-        if (queryProductDTO != null && !StringUtils.isEmpty(queryProductDTO.getSearch())) {
-            queryProductDTO.getSearch().trim();
-            CustomProductSpecification productName = new CustomProductSpecification("productName", queryProductDTO.getSearch());
+        if (queryProductDTO != null && !StringUtils.isEmpty(queryProductDTO.getProductName())) {
+            queryProductDTO.getProductName().trim();
+            CustomProductSpecification productName = new CustomProductSpecification("productName", queryProductDTO.getProductName());
 
             where = Specification.where(productName);
         }

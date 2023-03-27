@@ -33,7 +33,7 @@ public class CustomProductSpecification implements Specification<Product> {
         }
 
         if (feild.equalsIgnoreCase("minPrice")) {
-            return criteriaBuilder.between(root.<Float>get("promotionPrice"), (Float) value, (float) 1000000);
+            return criteriaBuilder.between(root.<Float>get("promotionPrice"), (Float) value, (float) 10000000);
         }
         
         return null;
