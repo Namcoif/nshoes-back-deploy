@@ -22,7 +22,7 @@ public class CustomOrderSpecification implements Specification<Order> {
     @Override
     public Predicate toPredicate(Root<Order> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
         if (field.equalsIgnoreCase("userId")) {
-            return criteriaBuilder.equal(root.get("userId"), value);
+            return criteriaBuilder.equal(root.get("user").get("userId"), value);
         }
         return null;
     }

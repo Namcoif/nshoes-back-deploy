@@ -15,9 +15,19 @@ public class OrderDTO {
 
     private String orderStatus;
 
+    private String address;
+
+    private String phoneNumber;
+
+    private Integer quantity;
+
+    private Integer size;
+
+    private Float productPrice;
+
     private String userId;
 
-    private Integer productId;
+    private Product product;
 
     @Data
     static class Product {

@@ -74,7 +74,7 @@ public class CartController {
         }
     }
 
-    @PostMapping(value = "/remove/{id}")
+    @DeleteMapping(value = "/remove/{id}")
     public ResponseEntity<?> deleteCartById(@PathVariable Integer id) throws JSONException {
         message = new JSONObject();
         try {

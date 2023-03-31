@@ -31,6 +31,9 @@ public class Order {
     @Column(name = "quantity")
     private Integer quantity;
 
+    @Column(name = "size")
+    private Integer size;
+
     @Column(name = "product_price")
     private Float productPrice;
 

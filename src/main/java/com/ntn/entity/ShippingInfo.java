@@ -20,7 +20,9 @@ public class ShippingInfo {
     @Column(name = "phone", length = 15)
     private String phoneNumber;
 
+    @Column(name = "on_default", columnDefinition = "tinyint default 0")
+    private Byte onDefault;
     @ManyToOne
-    @JoinColumn(name = "shipping_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 }
