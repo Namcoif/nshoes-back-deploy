@@ -19,6 +19,11 @@ public class ShippingInfoService implements IShippingInfoService{
     }
 
     @Override
+    public ShippingInfo findShippingInfoDefaultByUserId(String userId) {
+        return shippingInfoRepository.findShippingInfoDefaultByUserId(userId);
+    }
+
+    @Override
     public void createShippingInfo(ShippingInfo shippingInfo) {
         shippingInfoRepository.save(shippingInfo);
     }

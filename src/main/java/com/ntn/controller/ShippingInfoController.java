@@ -36,6 +36,18 @@ public class ShippingInfoController {
         }
     }
 
+    @GetMapping("/{userId}/default")
+    public ResponseEntity<?> findShippingInfoDefaultByUserId(@PathVariable String userId){
+        try {
+            ShippingInfo shippingInfo = shippingInfoService.findShippingInfoDefaultByUserId(userId);
+            ShippingInfoDTO shippingInfoDTO = modelMapper.map(shippingInfo, ShippingInfoDTO.class);
+            return ResponseEntity.ok(shippingInfoDTO);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.toString());
+        }
+    }
+
+
     @PostMapping("/create")
     public ResponseEntity<?> createShippingInfo(@RequestBody ShippingInfoDTO shippingInfoDTO){
         try {

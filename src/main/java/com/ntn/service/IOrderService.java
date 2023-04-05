@@ -17,4 +17,6 @@ public interface IOrderService {
     Order getOrderById(Integer id);
 
     void updateOrder(Order order);
+
+    Page<Order> getListOrdersPaging(Pageable pageable);
 }

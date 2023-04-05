@@ -24,6 +24,10 @@ public class CustomOrderSpecification implements Specification<Order> {
         if (field.equalsIgnoreCase("userId")) {
             return criteriaBuilder.equal(root.get("user").get("userId"), value);
         }
+        if (field.equalsIgnoreCase("orderStatus")) {
+            Order.OrderStatus orderStatus = Order.OrderStatus.toEnumOrderStatus((String) value);
+            return criteriaBuilder.equal(root.get("orderStatus"), orderStatus);
+        }
         return null;
     }
 }

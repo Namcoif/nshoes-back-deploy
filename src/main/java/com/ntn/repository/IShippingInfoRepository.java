@@ -10,4 +10,7 @@ import java.util.List;
 public interface IShippingInfoRepository extends JpaRepository<ShippingInfo,Integer> {
     @Query("SELECT si FROM ShippingInfo si WHERE si.user.userId=:userId")
     List<ShippingInfo> findShippingInfoByUserId(@Param("userId") String userId);
+
+    @Query("SELECT si FROM ShippingInfo si WHERE si.user.userId=:userId AND si.onDefault=1")
+    ShippingInfo findShippingInfoDefaultByUserId(@Param("userId") String userId);
 }

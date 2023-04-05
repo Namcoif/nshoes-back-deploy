@@ -50,6 +50,15 @@ public class Order {
     private Product product;
 
     public enum OrderStatus {
-        UNCONFIMRED, DELIVERY, DELIVERED, CANCELED, RETURNS
+        UNCONFIMRED, DELIVERY, DELIVERED, CANCELED, RETURNS;
+
+        public static OrderStatus toEnumOrderStatus(String orderStatus) {
+            for (OrderStatus item : OrderStatus.values()
+            ) {
+                if (item.toString().equals(orderStatus))
+                    return item;
+            }
+            return null;
+        }
     }
 }

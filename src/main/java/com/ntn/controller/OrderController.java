@@ -16,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -57,7 +59,7 @@ public class OrderController {
     public ResponseEntity<?> createOrder(@RequestBody OrderDTO orderDTO) {
         try {
             message = new JSONObject();
-            message.put("textResult", "Create order successfully!");
+            message.put("textResult", "Order success!");
 
             Order order = modelMapper.map(orderDTO, Order.class);
 
@@ -70,12 +72,25 @@ public class OrderController {
     }
 
     @PutMapping(value = "/update/{id}")
-    public ResponseEntity<?> updateOrder(@PathVariable Integer id, @RequestBody OrderDTO orderDTO) {
+    public ResponseEntity<?> updateOrder(@PathVariable Integer id, @PathParam("orderStatus") String orderStatus) {
         try {
             message = new JSONObject();
-            message.put("textResult", "Create order successfully!");
+            message.put("textResult", "Update order successfully!");
 
-            Order order = modelMapper.map(orderDTO, Order.class);
+            Order order = orderService.getOrderById(id);
+
+            Order.OrderStatus orderStatus1 = Order.OrderStatus.toEnumOrderStatus(orderStatus);
+
+            if (orderStatus1 == null) {
+                order = order;
+            } else if (orderStatus1 == Order.OrderStatus.DELIVERED) {
+                order.setOrderStatus(orderStatus1);
+                order.setReceivedDate(new Date());
+            } else {
+                order.setOrderStatus(orderStatus1);
+            }
+
+//            Order order = modelMapper.map(orderDTO, Order.class);
 
             orderService.updateOrder(order);
 

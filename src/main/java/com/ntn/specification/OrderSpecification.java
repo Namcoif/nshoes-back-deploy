@@ -14,6 +14,15 @@ public class OrderSpecification {
             where = Specification.where(userId);
 
         }
+        if (queryOrderDTO != null && queryOrderDTO.getOrderStatus() != null) {
+            CustomOrderSpecification orderStatus = new CustomOrderSpecification("orderStatus", queryOrderDTO.getOrderStatus());
+            if (where != null) {
+                where = where.and(orderStatus);
+            } else {
+                where = orderStatus;
+            }
+
+        }
         return where;
     }
 }

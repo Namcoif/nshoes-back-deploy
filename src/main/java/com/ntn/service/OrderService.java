@@ -36,12 +36,17 @@ public class OrderService implements IOrderService {
 
     @Override
     public Order getOrderById(Integer id) {
-        return getOrderById(id);
+        return orderRepository.getById(id);
     }
 
     @Override
     public void updateOrder(Order order) {
         orderRepository.save(order);
+    }
+
+    @Override
+    public Page<Order> getListOrdersPaging(Pageable pageable) {
+        return orderRepository.findAll(pageable);
     }
 
 
