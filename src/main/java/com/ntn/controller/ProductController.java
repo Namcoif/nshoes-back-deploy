@@ -2,8 +2,11 @@ package com.ntn.controller;
 
 import com.ntn.dto.ProductDTO;
 import com.ntn.dto.QueryProductDTO;
+import com.ntn.dto.RateDTO;
 import com.ntn.entity.Product;
+import com.ntn.entity.Rate;
 import com.ntn.service.IProductService;
+import com.ntn.service.IRateService;
 import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -16,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -24,6 +28,8 @@ public class ProductController {
     @Autowired
     private IProductService productService;
 
+    @Autowired
+    private IRateService rateService;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -109,6 +115,19 @@ public class ProductController {
         }.getType());
 
         return productDTOList;
+    }
+
+    @PostMapping(value = "/{id}/rate")
+    public ResponseEntity<?> rateProductById(@PathVariable Integer id, @RequestBody RateDTO rateDTO) {
+        try {
+            rateDTO.setRateDate(new Date());
+            Rate rate = modelMapper.map(rateDTO, Rate.class);
+            rateService.createRate(rate);
+            return ResponseEntity.status(HttpStatus.OK).body("Rate successfully!");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(e.toString());
+        }
     }
 
 }

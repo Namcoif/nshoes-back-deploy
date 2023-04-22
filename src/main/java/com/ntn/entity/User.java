@@ -52,6 +52,9 @@ public class User {
     private List<Order> orders;
 
     @OneToMany(mappedBy = "user")
+    private List<Rate> rates;
+
+    @OneToMany(mappedBy = "user")
     private List<Cart> carts;
     @ManyToOne
     @JoinColumn(name = "role", referencedColumnName = "id")

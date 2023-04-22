@@ -1,13 +1,11 @@
 package com.ntn.dto;
 
-import com.ntn.entity.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -38,14 +36,31 @@ public class ProductDTO {
 
     private List<ProductImage> productImgUrls;
 
+    private List<RateProduct> productRates;
+
     @Data
-    public static class ProductSize{
+    public static class ProductSize {
         private Integer id;
         private Integer size;
     }
+
     @Data
-    static  class ProductImage{
+    public static class ProductImage {
         private Integer id;
         private String url;
+    }
+
+    @Data
+    public static class RateProduct {
+        private Integer id;
+        private Integer star;
+        private String comment;
+        private Date rateDate;
+        private UserRate user;
+
+        @Data
+        static class UserRate {
+            private String fullName;
+        }
     }
 }

@@ -41,7 +41,7 @@ public class OrderController {
     }
 
     @GetMapping(value = "/paging")
-    public ResponseEntity<?> getListOrdersPaging(Pageable pageable, @RequestBody QueryOrderDTO queryOrderDTO) {
+    public ResponseEntity<?> getListOrdersPaging(Pageable pageable, @PathParam("query") QueryOrderDTO queryOrderDTO) {
         try {
             Page<Order> orderPage = orderService.getListOrdersPaging(pageable, queryOrderDTO);
             List<OrderDTO> orderDTOList = modelMapper.map(orderPage.getContent(), new TypeToken<List<OrderDTO>>() {
@@ -86,7 +86,10 @@ public class OrderController {
             } else if (orderStatus1 == Order.OrderStatus.DELIVERED) {
                 order.setOrderStatus(orderStatus1);
                 order.setReceivedDate(new Date());
-            } else {
+            } else if (orderStatus1 == Order.OrderStatus.CANCELED) {
+                message.remove("textResult");
+                message.put("textResult", "Order cancel successfully!");
+
                 order.setOrderStatus(orderStatus1);
             }
 

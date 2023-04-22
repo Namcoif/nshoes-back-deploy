@@ -53,6 +53,9 @@ public class Product {
 
     @OneToMany(mappedBy = "product")
     private List<Order> orders;
+
+    @OneToMany(mappedBy = "product")
+    private List<Rate> productRates;
     @ManyToMany
     @JoinTable(name = "size_product", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "size_id"))
     @JsonManagedReference

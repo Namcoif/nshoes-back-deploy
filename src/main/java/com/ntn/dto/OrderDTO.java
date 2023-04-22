@@ -3,6 +3,7 @@ package com.ntn.dto;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class OrderDTO {
@@ -33,6 +34,6 @@ public class OrderDTO {
     static class Product {
         private Integer id;
         private String productName;
-
+        private List<ProductDTO.ProductImage> productImgUrls;
     }
 }
