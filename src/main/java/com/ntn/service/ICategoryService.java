@@ -9,4 +9,8 @@ public interface ICategoryService {
     List<Category> getListCategories();
 
     void createCategory(Category category);
+
+    void updateCategory(Category category);
+
+    void deleteCategory(int id);
 }

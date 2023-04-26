@@ -130,4 +130,16 @@ public class ProductController {
         }
     }
 
+    @DeleteMapping(value = "/{id}/delete")
+    public ResponseEntity<?> deleteProductById(@PathVariable Integer id) {
+        try {
+
+            productService.deleteProduct(id);
+            return ResponseEntity.status(HttpStatus.OK).body(" The product has been deleted!");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(e.toString());
+        }
+    }
+
 }
