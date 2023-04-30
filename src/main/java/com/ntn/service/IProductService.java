@@ -23,4 +23,12 @@ public interface IProductService {
     void updateProduct(Product product);
 
     List<Product> sellingProducts(int limit);
+
+    List<Product> discountProducts();
+
+    List<Product> sellingProducts();
+
+    List<Product> slowestSellingProducts();
+
+
 }

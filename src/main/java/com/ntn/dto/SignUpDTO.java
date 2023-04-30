@@ -13,6 +13,9 @@ public class SignUpDTO {
     @Email(message = "Email invalidate")
     private String email;
 
+    @NotBlank(message = "Fullname cannot be a blank")
+    private String fullName;
+
     @NotNull(message = "Username cannot be null")
     @NotBlank(message = "Username cannot be a blank")
     private String username;

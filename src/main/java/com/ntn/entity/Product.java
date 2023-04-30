@@ -11,6 +11,17 @@ import java.util.List;
 
 @Entity
 @Table(name = "Product")
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "discountProducts",
+                procedureName = "Exec_discount_product",
+                resultClasses = Product.class),
+        @NamedStoredProcedureQuery(name = "slowestSellingProducts",
+                procedureName = "Exec_slowest_selling_products",
+                resultClasses = Product.class),
+        @NamedStoredProcedureQuery(name = "sellingProducts",
+                procedureName = "Exec_selling_products",
+                resultClasses = Product.class)
+})
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,7 +46,7 @@ public class Product {
     @Column(name = "quantity")
     private Integer quantity;
 
-    @Column(name = "description", length = 1000)
+    @Column(name = "description", length = 5000)
     private String description;
 
     @Column(name = "status")

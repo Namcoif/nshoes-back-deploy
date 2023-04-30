@@ -6,6 +6,8 @@ import com.ntn.entity.User;
 import com.ntn.repository.IUserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -31,6 +33,11 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public Page<User> getListUsersPaging(Pageable pageable) {
+        return userRepository.findAll(pageable);
+    }
+
+    @Override
     public void updateUser(User user) {
         userRepository.save(user);
     }
@@ -50,9 +57,16 @@ public class UserService implements IUserService {
         userRepository.save(user);
         UserDTO userDTO = modelMapper.map(userRepository.findByUsername(user.getUsername()), UserDTO.class);
         String subject = "Activate your NShoes account";
+//        String msgBody = "Hi " + user.getUsername() + ",\n" +
+//                "\n" +
+//                "To activate your NShoes account, please click https://nshoes-back.herokuapp.com/api/v1/auth/verification?username=" + userDTO.getUsername() + "&id=" + userDTO.getUserId() + " to verify your email address and you’ll be prompted to login.\n" +
+//                "\n" +
+//
+//                "Sincerely,\n" +
+//                "The NShoes Team";
         String msgBody = "Hi " + user.getUsername() + ",\n" +
                 "\n" +
-                "To activate your NShoes account, please click https://nshoes-back.herokuapp.com/api/v1/auth/verification?username=" + userDTO.getUsername() + "&id=" + userDTO.getUserId() + " to verify your email address and you’ll be prompted to login.\n" +
+                "To activate your NShoes account, please click http://localhost:8080/api/v1/auth/verification?username=" + userDTO.getUsername() + "&id=" + userDTO.getUserId() + " to verify your email address and you’ll be prompted to login.\n" +
                 "\n" +
 
                 "Sincerely,\n" +
@@ -67,7 +81,6 @@ public class UserService implements IUserService {
     public void updateAccount(User user) {
         userRepository.save(user);
     }
-
 
     @Override
     public UserDetails loadUserByUsername(String username) {

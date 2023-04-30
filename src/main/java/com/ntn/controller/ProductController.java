@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
@@ -57,8 +58,6 @@ public class ProductController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.toString());
         }
-
-
     }
 
     @PostMapping(value = "/create")
@@ -109,8 +108,29 @@ public class ProductController {
     }
 
     @GetMapping(value = "/selling-products")
+    @Transactional
     public List<ProductDTO> sellingProducts() {
-        List<Product> productList = productService.sellingProducts(10);
+        List<Product> productList = productService.sellingProducts();
+        List<ProductDTO> productDTOList = modelMapper.map(productList, new TypeToken<List<ProductDTO>>() {
+        }.getType());
+
+        return productDTOList;
+    }
+
+    @GetMapping(value = "/discount-products")
+    @Transactional
+    public List<ProductDTO> discountProducts() {
+        List<Product> productList = productService.discountProducts();
+        List<ProductDTO> productDTOList = modelMapper.map(productList, new TypeToken<List<ProductDTO>>() {
+        }.getType());
+
+        return productDTOList;
+    }
+
+    @GetMapping(value = "/slowest-products")
+    @Transactional
+    public List<ProductDTO> slowestSellingProducts() {
+        List<Product> productList = productService.slowestSellingProducts();
         List<ProductDTO> productDTOList = modelMapper.map(productList, new TypeToken<List<ProductDTO>>() {
         }.getType());
 

@@ -65,7 +65,22 @@ public class ProductService implements IProductService {
 
     @Override
     public List<Product> sellingProducts(int limit) {
-        return entityManager.createQuery("SELECT pr FROM Product pr ORDER BY pr.soldCount DESC",Product.class).setMaxResults(limit).getResultList();
+        return entityManager.createQuery("SELECT pr FROM Product pr ORDER BY pr.soldCount DESC", Product.class).setMaxResults(limit).getResultList();
+    }
+
+    @Override
+    public List<Product> discountProducts() {
+        return productRepository.discountProducts();
+    }
+
+    @Override
+    public List<Product> sellingProducts() {
+        return productRepository.sellingProducts();
+    }
+
+    @Override
+    public List<Product> slowestSellingProducts() {
+        return productRepository.slowestSellingProducts();
     }
 
 

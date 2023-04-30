@@ -83,7 +83,7 @@ public class AuthController {
             message = new JSONObject();
             message.put("auth", "Username or Email is exist!");
 
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.toString());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message.toString());
 //            throw e;
         }
     }

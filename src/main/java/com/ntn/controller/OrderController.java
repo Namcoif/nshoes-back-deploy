@@ -55,6 +55,21 @@ public class OrderController {
         }
     }
 
+    @GetMapping(value = "/paging/manager")
+    public ResponseEntity<?> getListOrdersPagingManager(Pageable pageable) {
+        try {
+            Page<Order> orderPage = orderService.getListOrdersPaging(pageable);
+            List<OrderDTO> orderDTOList = modelMapper.map(orderPage.getContent(), new TypeToken<List<OrderDTO>>() {
+            }.getType());
+
+            Page<OrderDTO> orderDTOPage = new PageImpl<>(orderDTOList, pageable, orderPage.getTotalElements());
+
+            return ResponseEntity.ok(orderDTOPage);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.toString());
+        }
+    }
+
     @PostMapping("/create-order")
     public ResponseEntity<?> createOrder(@RequestBody OrderDTO orderDTO) {
         try {
@@ -90,6 +105,8 @@ public class OrderController {
                 message.remove("textResult");
                 message.put("textResult", "Order cancel successfully!");
 
+                order.setOrderStatus(orderStatus1);
+            } else {
                 order.setOrderStatus(orderStatus1);
             }
 

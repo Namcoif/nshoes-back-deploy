@@ -9,6 +9,9 @@ import org.json.JSONObject;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +44,25 @@ public class UserController {
             List<User> users = userService.getListUsers();
             List<UserDTO> userDTOS = modelMapper.map(users, new TypeToken<List<UserDTO>>() {
             }.getType());
+
+            return ResponseEntity.status(HttpStatus.OK).body(userDTOS);
+        } catch (Exception e) {
+            message.put("resultText", "Get list user FAIL!");
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message.toString());
+        }
+
+    }
+
+    @GetMapping(value = "/admin/paging")
+    public ResponseEntity<?> getListUsersPaging(Pageable pageable) throws JSONException {
+        message = new JSONObject();
+        try {
+            Page<User> userPage = userService.getListUsersPaging(pageable);
+            List<UserDTO> userDTOList = modelMapper.map(userPage.getContent(), new TypeToken<List<UserDTO>>() {
+            }.getType());
+
+            Page<UserDTO> userDTOS = new PageImpl<>(userDTOList, pageable, userPage.getTotalElements());
 
             return ResponseEntity.status(HttpStatus.OK).body(userDTOS);
         } catch (Exception e) {
