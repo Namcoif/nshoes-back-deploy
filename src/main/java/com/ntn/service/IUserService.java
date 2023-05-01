@@ -21,4 +21,6 @@ public interface IUserService extends UserDetailsService {
     void createAccount(User user);
 
     void updateAccount(User user);
+
+    void deleteAccount(String userId);
 }

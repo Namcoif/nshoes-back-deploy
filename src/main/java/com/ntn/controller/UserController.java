@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
@@ -95,6 +96,8 @@ public class UserController {
         message = new JSONObject();
 
         try {
+            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+            String enCrypPassword = bCryptPasswordEncoder.encode(userDTO.getPassword());
 
             User user = modelMapper.map(userDTO, User.class);
             user.setUserId(id);
@@ -120,6 +123,9 @@ public class UserController {
         }
 
         try {
+            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+            String enCrypPassword = bCryptPasswordEncoder.encode(userDTO.getPassword());
+
             User userUpdate = modelMapper.map(userDTO, User.class);
             Role role = modelMapper.map(user.getRole(), Role.class);
 
@@ -139,5 +145,72 @@ public class UserController {
         }
     }
 
+    @PutMapping(value = "/admin/lock/{id}")
+    public ResponseEntity<?> lockAccount(@PathVariable String id) throws JSONException {
+        message = new JSONObject();
 
+        User user = userService.getUserById(id);
+        if (user == null) {
+            message.put("resultText", "User not found!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message.toString());
+        }
+
+        try {
+//            user.setRole(null);
+            user.setStatus(User.AccountStatus.NOT_ACTIVE);
+            userService.updateUser(user);
+            message.put("resultText", "Lock account successfully!");
+            return ResponseEntity.status(HttpStatus.OK).body(message.toString());
+        } catch (Exception e) {
+
+            message.put("resultText", "Lock account FAIL!");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message.toString());
+
+        }
+    }
+
+    @PutMapping(value = "/admin/un-lock/{id}")
+    public ResponseEntity<?> unLockAccount(@PathVariable String id) throws JSONException {
+        message = new JSONObject();
+
+        User user = userService.getUserById(id);
+        if (user == null) {
+            message.put("resultText", "User not found!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message.toString());
+        }
+
+        try {
+
+            user.setStatus(User.AccountStatus.ACTIVE);
+            userService.updateUser(user);
+            message.put("resultText", "Lock account successfully!");
+            return ResponseEntity.status(HttpStatus.OK).body(message.toString());
+        } catch (Exception e) {
+
+            message.put("resultText", "Lock account FAIL!");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message.toString());
+
+        }
+    }
+
+    @DeleteMapping(value = "/admin/delete/{userId}")
+    public ResponseEntity<?> deleteAccount(@PathVariable String userId) throws JSONException {
+        message = new JSONObject();
+
+        User user = userService.getUserById(userId);
+        if (user == null) {
+            message.put("resultText", "User not found!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message.toString());
+        }
+        try {
+            userService.deleteAccount(userId);
+            message.put("resultText", "Delete Account successfully!");
+            return ResponseEntity.status(HttpStatus.OK).body(message.toString());
+        } catch (Exception e) {
+
+            message.put("resultText", "Update Account FAIL!");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message.toString());
+
+        }
+    }
 }

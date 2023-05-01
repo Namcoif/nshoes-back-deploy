@@ -3,6 +3,7 @@ package com.ntn.controller;
 import com.ntn.dto.JwtTokenDTO;
 import com.ntn.dto.SignInDTO;
 import com.ntn.dto.SignUpDTO;
+import com.ntn.dto.SignUpManagerDTO;
 import com.ntn.entity.User;
 import com.ntn.service.IRoleService;
 import com.ntn.service.IUserService;
@@ -57,10 +58,16 @@ public class AuthController {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
             User user = userService.findByUsername(signInDTO.getUsername());
+            if (user.getStatus() != User.AccountStatus.NOT_ACTIVE) {
+                return ResponseEntity.ok(
+                        new JwtTokenDTO(userDetails.getUsername(), jwtToken, userDetails.getAuthorities().toString(), user.getUserId())
+                );
+            } else {
+                message = new JSONObject();
+                message.put("auth", "Your account or password is incorrect!");
 
-            return ResponseEntity.ok(
-                    new JwtTokenDTO(userDetails.getUsername(), jwtToken, userDetails.getAuthorities().toString(), user.getUserId())
-            );
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message.toString());
+            }
         } catch (Exception e) {
             message = new JSONObject();
             message.put("auth", "Your account or password is incorrect!");
@@ -77,6 +84,25 @@ public class AuthController {
             User user = modelMapper.map(signUpDTO, User.class);
             user.setPassword(enCrypPassword);
             user.setStatus(User.AccountStatus.NOT_ACTIVE);
+            userService.createAccount(user);
+            return ResponseEntity.ok("Register successfully!");
+        } catch (Exception e) {
+            message = new JSONObject();
+            message.put("auth", "Username or Email is exist!");
+
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message.toString());
+//            throw e;
+        }
+    }
+
+    @PostMapping("/sign-up-manager")
+    public ResponseEntity<?> signUpManager(@RequestBody @Valid SignUpManagerDTO signUpManagerDTO) throws JSONException {
+        try {
+            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+            String enCrypPassword = bCryptPasswordEncoder.encode(signUpManagerDTO.getPassword());
+            User user = modelMapper.map(signUpManagerDTO, User.class);
+            user.setPassword(enCrypPassword);
+            user.setStatus(User.AccountStatus.ACTIVE);
             userService.createAccount(user);
             return ResponseEntity.ok("Register successfully!");
         } catch (Exception e) {

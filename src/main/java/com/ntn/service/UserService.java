@@ -83,6 +83,11 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public void deleteAccount(String userId) {
+        userRepository.deleteById(userId);
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) {
         User user = userRepository.findByUsername(username);
         UserDTO userDTO = modelMapper.map(user, UserDTO.class);

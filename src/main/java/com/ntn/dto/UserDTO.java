@@ -22,6 +22,9 @@ public class UserDTO {
     private RoleDTO userRole;
 
     private List<Cart> carts;
+    private List<Order> orders;
+    private List<ShippingInfo> shippingInfos;
+    private List<Rate> rates;
 
     //    private Integer role;
     @Data
@@ -39,12 +42,27 @@ public class UserDTO {
     }
 
     @Data
+    static class Order {
+        private Integer id;
+    }
+
+    @Data
     static class Product2 {
         private Integer productId;
         private String productName;
         private List<Image2> productImgUrls;
         private Float promotionPrice;
 
+    }
+
+    @Data
+    static class ShippingInfo {
+        private Integer id;
+    }
+
+    @Data
+    static class Rate {
+        private Integer id;
     }
 
     @Data
